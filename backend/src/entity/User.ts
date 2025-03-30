@@ -20,6 +20,9 @@ export class User {
   @Column({ nullable: true })
   profile_picture: string;
 
+  @Column()
+  created_at: Date;
+
   hashPassword = async () => {
     this.password = await bcrypt.hash(this.password, 10);
   };

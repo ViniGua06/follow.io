@@ -5,9 +5,9 @@ import NotFoundError from "../models/errors/notFound.error";
 import BadRequestError from "../models/errors/badRequest.error";
 import bcrypt from "bcrypt";
 
-const _user = AppDataSource.getRepository(User);
-
 export default class UserServices {
+  _user = AppDataSource.getRepository(User);
+
   getAllUsers = async (
     skip: number,
     take: number
@@ -17,13 +17,13 @@ export default class UserServices {
     hasMore: boolean;
     next: number | null;
   }> => {
-    const users = await _user.find({ skip: skip, take: take });
+    const users = await this._user.find({ skip: skip, take: take });
 
     if (users.length == 0)
       throw new NotFoundError("Nenhum usuário encontrado!");
 
-    const allUsers = (await _user.find()).length;
-    const afterUsers = await _user.find({ skip: skip + take, take: take });
+    const allUsers = (await this._user.find()).length;
+    const afterUsers = await this._user.find({ skip: skip + take, take: take });
 
     return {
       users: users,
@@ -47,7 +47,7 @@ export default class UserServices {
     }
 
     try {
-      const insertedUser = await _user.insert(user);
+      const insertedUser = await this._user.insert(user);
       return insertedUser.identifiers[0]["id"];
     } catch (error) {
       throw new BadRequestError("Email já cadastrado!");
@@ -55,7 +55,7 @@ export default class UserServices {
   };
 
   authUser = async (email: string, password: string): Promise<string> => {
-    const user = await _user.findOneBy({ email: email });
+    const user = await this._user.findOneBy({ email: email });
 
     if (!user) throw new BadRequestError("Email não cadastrado!");
 
