@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import BadRequestError from "../../models/errors/badRequest.error";
 import jwt from "jsonwebtoken";
+import UnauthorizedError from "../../models/errors/unauthorized.error";
 
 const Auth = (req: Request, res: Response, next: NextFunction) => {
   if (!req.cookies || !req.cookies.token) {
     return next(
-      new BadRequestError(
+      new UnauthorizedError(
         "Cookies com o token de autenticação não encontrados!"
       )
     );
@@ -14,7 +15,7 @@ const Auth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
 
   jwt.verify(token, "SENHA", (error) => {
-    if (error) next(new BadRequestError("Credenciais inválidas!"));
+    if (error) next(new UnauthorizedError("Credenciais inválidas!"));
 
     next();
   });
