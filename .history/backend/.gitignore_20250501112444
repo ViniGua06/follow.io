@@ -1,0 +1,13 @@
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+.env
+
+*.json
+!package.json
+!tsconfig.json
+
+backend/neon-operator-434718-a8-3a48e7246514.json
