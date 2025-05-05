@@ -15,6 +15,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import commentRouter from "./routes/comment.router";
 import followerRouter from "./routes/follower.router";
+import tagRouter from "./routes/tag.router";
 
 // Configuração do Swagger
 const options = {
@@ -48,6 +49,7 @@ app.use("/user", userRouter);
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/follower", followerRouter);
+app.use("/tag", tagRouter);
 
 app.use(ErrorHandler.bind(ErrorHandler));
 

@@ -16,7 +16,7 @@ export default class Post {
   @Column({ nullable: false })
   title: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   content: string;
 
   @Column({ nullable: true })
@@ -28,6 +28,6 @@ export default class Post {
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
 
-  @Column()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;
 }

@@ -29,7 +29,7 @@ export default class UserController {
 
       if (!name) throw new BadRequestError("Nome não fornecido!");
 
-      const users = await this.userServices.getUsersByName(name);
+      const users = await this.userServices.getUsersByName(name, false);
 
       res
         .status(200)
@@ -135,5 +135,24 @@ export default class UserController {
       .clearCookie("token")
       .status(200)
       .json({ status: "success", message: "Usuário deslogou" });
+  };
+
+  checkIfUserNameIsValid = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { userName } = req.params;
+
+      if (!userName)
+        throw new BadRequestError("Nome de usuário não fornecido!");
+
+      const users = await this.userServices.getUsersByName(userName, true);
+
+      res.status(200).json({ isValid: users.length == 0 });
+    } catch (error) {
+      next(error);
+    }
   };
 }

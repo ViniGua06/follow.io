@@ -2,6 +2,7 @@ import { IsEmail } from "class-validator";
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -31,7 +32,7 @@ export class User {
   @Column({ nullable: true })
   profile_picture: string;
 
-  @Column()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;
 
   @OneToMany(() => Post, (post) => post.user)
@@ -47,6 +48,7 @@ export class User {
   following: Follower[];
 
   @ManyToMany(() => Tag, (tag) => tag)
+  @JoinTable()
   tags: Tag[];
 
   @Exclude()

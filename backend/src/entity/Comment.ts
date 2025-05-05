@@ -7,7 +7,7 @@ export default class Comment {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   text: string;
 
   @ManyToOne(() => User, (user) => user.comments, { onDelete: "CASCADE" })
@@ -16,9 +16,9 @@ export default class Comment {
   @ManyToOne(() => Post, (post) => post.comments, { onDelete: "CASCADE" })
   post: Post;
 
-  @ManyToOne(() => Comment, { nullable: true, onDelete: "CASCADE" })
+  @Column({ nullable: true })
   reply_id?: string;
 
-  @Column()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;
 }

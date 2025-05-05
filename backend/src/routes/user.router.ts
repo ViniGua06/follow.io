@@ -30,5 +30,9 @@ userRouter.post(
   upload.single("image"),
   userController.uploadUserImage
 );
+userRouter.get(
+  "/name/validate/:userName",
+  userController.checkIfUserNameIsValid
+);
 
 export default userRouter;

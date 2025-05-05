@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./User";
 
 @Entity({ name: "tags" })
 export class Tag {
@@ -10,4 +11,7 @@ export class Tag {
 
   @Column({ nullable: true })
   color: string;
+
+  @ManyToMany(() => User, (user) => user.tags)
+  users: User[];
 }

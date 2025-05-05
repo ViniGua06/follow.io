@@ -23,10 +23,10 @@ export default class UserServices {
     return user;
   };
 
-  getUsersByName = async (name: string): Promise<User[]> => {
+  getUsersByName = async (name: string, exact: boolean): Promise<User[]> => {
     const users = await this._user.find({
       where: {
-        name: Like(`${name}%`),
+        name: exact ? name : Like(`${name}%`),
       },
     });
 
@@ -45,7 +45,7 @@ export default class UserServices {
     const users = await this._user.find({
       skip: skip,
       take: take,
-      relations: ["posts"],
+      relations: ["posts", "followers", "following", "tags"],
     });
 
     if (users.length == 0)
