@@ -14,7 +14,7 @@ export default class UserServices {
   getUserById = async (id: string): Promise<User> => {
     const user = await this._user.findOne({
       where: { id: id },
-      relations: ["posts", "tags"],
+      relations: ["posts"],
     });
     if (!user) throw new NotFoundError(`Usuário de ID ${id} não encontrado!`);
 

@@ -6,8 +6,8 @@ const tagRouter = Router();
 const tagController = new TagController();
 
 tagRouter.post("/", tagController.createTags);
-tagRouter.post("/user/:userId", tagController.associateTagToUser);
+tagRouter.post("/:tagId/user/:userId", tagController.associateTagToUser);
+
 tagRouter.get("/", tagController.getAllTags);
-tagRouter.get("/name/:name", tagController.getTagsByName);
 
 export default tagRouter;

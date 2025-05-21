@@ -20,7 +20,6 @@ export default class TagController {
   getTagsByName = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { name } = req.params;
-
       res.status(200).json({
         status: "success",
         tags: await this._tagServices.selectTagsByName(name as string, false),

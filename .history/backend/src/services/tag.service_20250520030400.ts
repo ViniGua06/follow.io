@@ -34,8 +34,7 @@ export default class TagServices {
     if (!tag || !user)
       throw new NotFoundError("Tag e/ou usuário não encontrados!");
 
-    const userTag = user.tags.find((userTag) => userTag.id == tag.id);
-    if (userTag) return;
+    const userTags = user.tags.find((userTag) => userTag.id == tag.id);
 
     user.tags.push(tag);
     await this._user.save(user);

@@ -17,19 +17,6 @@ export default class TagController {
     }
   };
 
-  getTagsByName = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { name } = req.params;
-
-      res.status(200).json({
-        status: "success",
-        tags: await this._tagServices.selectTagsByName(name as string, false),
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   createTags = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tagsFromBody: Omit<Tag, "id">[] = req.body.tags;

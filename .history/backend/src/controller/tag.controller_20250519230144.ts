@@ -17,19 +17,6 @@ export default class TagController {
     }
   };
 
-  getTagsByName = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { name } = req.params;
-
-      res.status(200).json({
-        status: "success",
-        tags: await this._tagServices.selectTagsByName(name as string, false),
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   createTags = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tagsFromBody: Omit<Tag, "id">[] = req.body.tags;
@@ -50,12 +37,11 @@ export default class TagController {
   ) => {
     try {
       const { userId } = req.params;
-      const tags: Tag[] = req.body.tags;
+      const tags = req.body.tags;
 
       if (!userId) throw new BadRequestError("Usuário não fornecidos");
 
-      for (const tag of tags)
-        await this._tagServices.associateTagToUser(tag.id, userId);
+      await this._tagServices.associateTagToUser(tagId, userId);
 
       res.status(200).json({ status: "success", message: "Tag associada!" });
     } catch (error) {

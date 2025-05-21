@@ -14,7 +14,7 @@ export default class UserServices {
   getUserById = async (id: string): Promise<User> => {
     const user = await this._user.findOne({
       where: { id: id },
-      relations: ["posts", "tags"],
+      relations: ["posts"],
     });
     if (!user) throw new NotFoundError(`Usuário de ID ${id} não encontrado!`);
 
@@ -77,7 +77,7 @@ export default class UserServices {
       const insertedUser = await this._user.insert(user);
       return insertedUser.identifiers[0]["id"];
     } catch (error) {
-      throw new BadRequestError("Email já cadastrado!");
+      throw new BadRequestError(error);
     }
   };
 

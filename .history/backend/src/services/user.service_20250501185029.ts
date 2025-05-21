@@ -14,7 +14,7 @@ export default class UserServices {
   getUserById = async (id: string): Promise<User> => {
     const user = await this._user.findOne({
       where: { id: id },
-      relations: ["posts", "tags"],
+      relations: ["posts"],
     });
     if (!user) throw new NotFoundError(`Usuário de ID ${id} não encontrado!`);
 
@@ -23,10 +23,10 @@ export default class UserServices {
     return user;
   };
 
-  getUsersByName = async (name: string, exact: boolean): Promise<User[]> => {
+  getUsersByName = async (name: string): Promise<User[]> => {
     const users = await this._user.find({
       where: {
-        name: exact ? name : Like(`${name}%`),
+        name: Like(`${name}%`),
       },
     });
 

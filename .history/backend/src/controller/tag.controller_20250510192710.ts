@@ -17,25 +17,16 @@ export default class TagController {
     }
   };
 
-  getTagsByName = async (req: Request, res: Response, next: NextFunction) => {
+  createTag = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { name } = req.params;
+      const tagFromBody: Omit<Tag, "id"> = req.body;
 
-      res.status(200).json({
-        status: "success",
-        tags: await this._tagServices.selectTagsByName(name as string, false),
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+      const { color, name } = tagFromBody;
 
-  createTags = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const tagsFromBody: Omit<Tag, "id">[] = req.body.tags;
+      if (!color || !name)
+        throw new BadRequestError("Nome e/ou cor não fornecidos");
 
-      for (const tagFromBody of tagsFromBody)
-        await this._tagServices.insertTag(tagFromBody);
+      await this._tagServices.insertTag(tagFromBody);
 
       res.status(201).json({ status: "success", message: "Tag criada!" });
     } catch (error) {
@@ -49,13 +40,12 @@ export default class TagController {
     next: NextFunction
   ) => {
     try {
-      const { userId } = req.params;
-      const tags: Tag[] = req.body.tags;
+      const { tagId, userId } = req.params;
 
-      if (!userId) throw new BadRequestError("Usuário não fornecidos");
+      if (!tagId || !userId)
+        throw new BadRequestError("Tag e/ou usuário não fornecidos");
 
-      for (const tag of tags)
-        await this._tagServices.associateTagToUser(tag.id, userId);
+      await this._tagServices.associateTagToUser(tagId, userId);
 
       res.status(200).json({ status: "success", message: "Tag associada!" });
     } catch (error) {

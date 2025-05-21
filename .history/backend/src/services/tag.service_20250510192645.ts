@@ -1,4 +1,3 @@
-import { Like } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Tag } from "../entity/Tag";
 import { User } from "../entity/User";
@@ -16,14 +15,6 @@ export default class TagServices {
     await this._tag.insert(tag);
   };
 
-  selectTagsByName = async (name: string, exact: boolean) => {
-    return await this._tag.find({
-      where: {
-        name: exact ? name : Like(`%${name}%`),
-      },
-    });
-  };
-
   associateTagToUser = async (tagId: string, userId: string) => {
     const tag = await this._tag.findOne({ where: { id: tagId } });
     const user = await this._user.findOne({
@@ -33,9 +24,6 @@ export default class TagServices {
 
     if (!tag || !user)
       throw new NotFoundError("Tag e/ou usuário não encontrados!");
-
-    const userTag = user.tags.find((userTag) => userTag.id == tag.id);
-    if (userTag) return;
 
     user.tags.push(tag);
     await this._user.save(user);

@@ -1,0 +1,24 @@
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./User";
+import Post from "./Post";
+
+@Entity("comments")
+export default class Comment {
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
+
+  @Column({ nullable: true })
+  text: string;
+
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: "CASCADE" })
+  user: User;
+
+  @ManyToOne(() => Post, (post) => post.comments, { onDelete: "CASCADE" })
+  post: Post;
+
+  @Column({ nullable: true })
+  reply_id?: string;
+
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  created_at: Date;
+}
