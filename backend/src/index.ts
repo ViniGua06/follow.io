@@ -6,8 +6,10 @@ import userRouter from "./routes/user.router";
 import ErrorHandler from "./middlewares/error/errorHandler.middleware";
 import cookieParser from "cookie-parser";
 import postRouter from "./routes/post.router";
+import http from "http";
 
 const app = express();
+const server = http.createServer(app);
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,6 +18,8 @@ import swaggerJsdoc from "swagger-jsdoc";
 import commentRouter from "./routes/comment.router";
 import followerRouter from "./routes/follower.router";
 import tagRouter from "./routes/tag.router";
+import chatRouter from "./routes/chat.router";
+import SetupWebSocket from "./websocket";
 
 // Configuração do Swagger
 const options = {
@@ -50,11 +54,13 @@ app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/follower", followerRouter);
 app.use("/tag", tagRouter);
+app.use("/chat", chatRouter);
 
 app.use(ErrorHandler.bind(ErrorHandler));
 
 AppDataSource.initialize().then(() => {
-  app.listen(PORT, () => {
+  SetupWebSocket(server);
+  server.listen(PORT, () => {
     console.log("Servidor rodando na porta", PORT);
   });
 });

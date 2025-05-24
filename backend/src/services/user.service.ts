@@ -18,8 +18,6 @@ export default class UserServices {
     });
     if (!user) throw new NotFoundError(`Usuário de ID ${id} não encontrado!`);
 
-    console.log("OLA \n", user.posts);
-
     return user;
   };
 
@@ -45,7 +43,7 @@ export default class UserServices {
     const users = await this._user.find({
       skip: skip,
       take: take,
-      relations: ["posts", "followers", "following", "tags"],
+      relations: ["posts", "followers", "following", "tags", "chats"],
     });
 
     if (users.length == 0)

@@ -7,6 +7,8 @@ import dotenv from "dotenv";
 import Comment from "./entity/Comment";
 import Follower from "./entity/Follower";
 import { Tag } from "./entity/Tag";
+import Chat from "./entity/Chat";
+import Message from "./entity/Message";
 
 dotenv.config();
 
@@ -21,7 +23,7 @@ export const AppDataSource = new DataSource({
   migrationsRun: false,
   dropSchema: false,
   logging: false,
-  entities: [User, Post, Comment, Follower, Tag],
+  entities: [User, Post, Comment, Follower, Tag, Chat, Message],
   migrations: ["src/migration/**/*.ts"],
   subscribers: [],
 });

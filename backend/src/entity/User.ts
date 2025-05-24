@@ -13,6 +13,7 @@ import Comment from "./Comment";
 import Follower from "./Follower";
 import { Tag } from "./Tag";
 import { Exclude } from "class-transformer";
+import Chat from "./Chat";
 
 @Entity("users")
 export class User {
@@ -50,6 +51,9 @@ export class User {
   @ManyToMany(() => Tag, (tag) => tag)
   @JoinTable()
   tags: Tag[];
+
+  @ManyToMany(() => Chat, (chat) => chat.users)
+  chats: Chat[];
 
   @Exclude()
   hashPassword = async () => {
