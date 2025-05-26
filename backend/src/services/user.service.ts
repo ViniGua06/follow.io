@@ -14,9 +14,12 @@ export default class UserServices {
   getUserById = async (id: string): Promise<User> => {
     const user = await this._user.findOne({
       where: { id: id },
-      relations: ["posts", "tags"],
+      relations: ["posts", "followers", "following", "tags", "chats"],
     });
     if (!user) throw new NotFoundError(`Usuário de ID ${id} não encontrado!`);
+
+    user.followers_qt = user.followers.length;
+    user.following_qt = user.following.length;
 
     return user;
   };
@@ -43,7 +46,7 @@ export default class UserServices {
     const users = await this._user.find({
       skip: skip,
       take: take,
-      relations: ["posts", "followers", "following", "tags", "chats"],
+      // relations: ["posts", "followers", "following", "tags", "chats"],
     });
 
     if (users.length == 0)

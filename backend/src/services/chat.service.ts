@@ -8,6 +8,10 @@ export default class ChatServices {
     return await this._chat.find({ relations: ["messages", "users"] });
   };
 
+  public selectChatById = async (id: string) => {
+    return await this._chat.findOne({ where: { id: id } });
+  };
+
   public insertChat = async (
     chat: Omit<Chat, "id" | "messages"> // vai dormir??? GAY sbia. vai la dormir vou acabar a logica te mando no zap quando acabar
   ): Promise<Chat> => {

@@ -14,11 +14,15 @@ import Follower from "./Follower";
 import { Tag } from "./Tag";
 import { Exclude } from "class-transformer";
 import Chat from "./Chat";
+import Message from "./Message";
 
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
+
+  followers_qt?: number;
+  following_qt?: number;
 
   @Column()
   name: string;
@@ -54,6 +58,9 @@ export class User {
 
   @ManyToMany(() => Chat, (chat) => chat.users)
   chats: Chat[];
+
+  @OneToMany(() => Message, (message) => message.user)
+  messages: Message[];
 
   @Exclude()
   hashPassword = async () => {

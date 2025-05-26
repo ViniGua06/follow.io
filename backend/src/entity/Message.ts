@@ -13,8 +13,8 @@ class Message {
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;
 
-  @Column({ nullable: false })
-  user_id: string;
+  @ManyToOne(() => User, (user) => user.messages)
+  user: User;
 
   @ManyToOne(() => Chat, (chat) => chat.messages)
   chat: Chat;
